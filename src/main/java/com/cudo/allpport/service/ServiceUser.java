@@ -5,7 +5,9 @@ import java.util.Map;
 
 public interface ServiceUser {
 
-//    Map<String, Object> getUserList (Map<String, Object> param);
+    Map<String, Object> getUser (String userName);
+
     Map<String, Object> getUserList ();
+
 
 }
