@@ -17,4 +17,7 @@ public interface ServiceUser {
     // 수정
     Map<String, Object> putUser (Map<String, Object> param);
 
+    // 삭제
+    Map<String, Object> deleteUser (Map<String, Object> param);
+
 }

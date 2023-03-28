@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,7 @@ public class ServiceUserImpl implements ServiceUser {
         return responseMap;
     }
 
+    @Transactional
     @Override
     public Map<String, Object> postUser(Map<String, Object> param) {
         Map<String, Object> responseMap = new HashMap<>();
@@ -75,6 +77,7 @@ public class ServiceUserImpl implements ServiceUser {
         return responseMap;
     }
 
+    @Transactional
     @Override
     public Map<String, Object> putUser(Map<String, Object> param) {
         Map<String, Object> responseMap = new HashMap<>();
@@ -92,6 +95,26 @@ public class ServiceUserImpl implements ServiceUser {
         }
         else{
             responseMap.putAll(ParameterUtils.responseOption("FAIL"));
+        }
+
+        return responseMap;
+    }
+
+    @Transactional
+    @Override
+    public Map<String, Object> deleteUser(Map<String, Object> param) {
+        Map<String, Object> responseMap = new HashMap<>();
+
+        Long userId = Long.valueOf(String.valueOf(param.get("userId")));
+        UserVo deleteBefore = repositoryUser.findByUserId(userId);
+
+        if(deleteBefore != null){
+            repositoryUser.deleteByUserId(userId);
+            responseMap.put("data", deleteBefore);
+            responseMap.putAll(ParameterUtils.responseOption("SUCCESS"));
+        }
+        else{
+            responseMap.putAll(ParameterUtils.responseOption("NO_CONTENT"));
         }
 
         return responseMap;
