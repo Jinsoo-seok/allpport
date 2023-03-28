@@ -1,4 +1,4 @@
-CREATE TABLE `ems_supply`.`user_info` (
+CREATE TABLE `allpport`.`user_info` (
     `user_id` INT NOT NULL AUTO_INCREMENT,
     `user_name` VARCHAR(45) NULL,
     `user_pw` VARCHAR(200) NULL,

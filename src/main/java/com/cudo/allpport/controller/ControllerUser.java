@@ -25,7 +25,7 @@ public class ControllerUser {
     @GetMapping("/user")
     public ResponseEntity getUserList(HttpServletRequest request){
         long startTime = System.currentTimeMillis();
-        String apiInfo ="[" + request.getMethod() + "] [ " + request.getRequestURI() + "]";
+        String apiInfo ="[" + request.getMethod() + "] [" + request.getRequestURI() + "]";
         log.info("{} [START] [{}]", apiInfo, startTime);
 
         Map<String, Object> responseMap = new HashMap<>();
@@ -45,12 +45,11 @@ public class ControllerUser {
             responseMap.put("log", exception.getMessage());
         }
 
-
+        long endTime = System.currentTimeMillis();
+        long procTime = System.currentTimeMillis();
+        log.info("{} [END] [{}] - {}", apiInfo, procTime, responseMap.get("code"));
 
         HttpHeaders headers = new HttpHeaders();
         return new ResponseEntity(responseMap, headers, HttpStatus.OK);
     }
-
-
-
 }
