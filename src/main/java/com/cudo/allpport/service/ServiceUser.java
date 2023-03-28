@@ -14,5 +14,7 @@ public interface ServiceUser {
     // 등록
     Map<String, Object> postUser (Map<String, Object> param);
 
+    // 수정
+    Map<String, Object> putUser (Map<String, Object> param);
 
 }

@@ -74,4 +74,26 @@ public class ServiceUserImpl implements ServiceUser {
 
         return responseMap;
     }
+
+    @Override
+    public Map<String, Object> putUser(Map<String, Object> param) {
+        Map<String, Object> responseMap = new HashMap<>();
+
+        UserVo userVo = new UserVo();
+        userVo.setUserId((Integer) param.get("userId"));
+        userVo.setUserName((String) param.get("userName"));
+        userVo.setUserPassword(passwordEncoder.encode((CharSequence) param.get("userPassword")));
+
+        UserVo saveResult = repositoryUser.save(userVo);
+
+        if(saveResult != null){
+            responseMap.put("data", saveResult);
+            responseMap.putAll(ParameterUtils.responseOption("SUCCESS"));
+        }
+        else{
+            responseMap.putAll(ParameterUtils.responseOption("FAIL"));
+        }
+
+        return responseMap;
+    }
 }

@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.cudo.allpport.util.ParameterUtils.parameterString;
-import static com.cudo.allpport.util.ParameterUtils.parameterValidation;
+import static com.cudo.allpport.util.ParameterUtils.*;
 
 @Slf4j
 @RestController
@@ -94,6 +93,42 @@ public class ControllerUser {
             parameterString("userPassword", param.get("userPassword"), true, 0, null);
 
             responseMap = serviceUser.postUser(param);
+
+        }catch (ParamException paramException){
+            responseMap.put("code", paramException.getCode());
+            responseMap.put("message", paramException.getMessage());
+        }catch(Exception exception){
+            log.error("[Exception][postUser] - " + exception.getMessage());
+            responseMap.putAll(ParameterUtils.responseOption("FAIL"));
+            responseMap.put("log", exception.getMessage());
+        }
+
+        long endTime = System.currentTimeMillis();
+        long procTime = endTime-startTime;
+        log.info("{} [END] [{}] - {}", apiInfo, procTime, responseMap.get("code"));
+
+        HttpHeaders headers = new HttpHeaders();
+        return new ResponseEntity(responseMap, headers, HttpStatus.OK);
+    }
+
+    @PutMapping("/user")
+    public ResponseEntity<Object> putUser(HttpServletRequest request, @RequestBody Map<String, Object> param){
+        long startTime = System.currentTimeMillis();
+        String apiInfo ="[" + request.getMethod() + "] [" + request.getRequestURI() + "]";
+        log.info("{} [START] [{}]", apiInfo, startTime);
+
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.putAll(ParameterUtils.responseOption("SUCCESS"));
+
+        String[] keyList = {"userId", "userName", "userPassword"};
+
+        try{
+            parameterValidation(param, keyList);
+            parameterInt("userId", param.get("userId"), true);
+            parameterString("userName", param.get("userName"), true, 0, null);
+            parameterString("userPassword", param.get("userPassword"), true, 0, null);
+
+            responseMap = serviceUser.putUser(param);
 
         }catch (ParamException paramException){
             responseMap.put("code", paramException.getCode());
