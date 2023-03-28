@@ -1,9 +1,7 @@
 package com.cudo.allpport.vo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,13 +13,15 @@ import lombok.Setter;
 public class UserVo {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Integer userId;
 
     @Column(nullable = false)
     private String userName;
 
+    @JsonIgnore
     @Column(nullable = false)
-    private Integer userPassword;
+    private String userPassword;
 
 }
